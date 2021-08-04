@@ -39,13 +39,13 @@ ssh-keyscan -v -t "$ssh_keyscan_types" aur.archlinux.org >>~/.ssh/known_hosts
 echo '::endgroup::'
 
 echo '::group::Importing private key'
-echo "$ssh_private_key" >~/.ssh/aur
-chmod -vR 600 ~/.ssh/aur*
-ssh-keygen -vy -f ~/.ssh/aur >~/.ssh/aur.pub
+# echo "$ssh_private_key" >~/.ssh/aur
+# chmod -vR 600 ~/.ssh/aur*
+# ssh-keygen -vy -f ~/.ssh/aur >~/.ssh/aur.pub
 echo '::endgroup::'
 
 echo '::group::Checksums of SSH keys'
-sha512sum ~/.ssh/aur ~/.ssh/aur.pub
+# sha512sum ~/.ssh/aur ~/.ssh/aur.pub
 echo '::endgroup::'
 
 echo '::group::Configuring Git'
@@ -54,7 +54,8 @@ git config --global user.email "$commit_email"
 echo '::endgroup::'
 
 echo '::group::Cloning AUR package into /tmp/local-repo'
-git clone -v "https://aur.archlinux.org/${pkgname}.git" /tmp/local-repo
+git init /tmp/local-repo
+# git clone -v "https://aur.archlinux.org/${pkgname}.git" /tmp/local-repo
 echo '::endgroup::'
 
 echo '::group::Copying files into /tmp/local-repo'
@@ -100,7 +101,16 @@ false)
 esac
 echo '::endgroup::'
 
+echo '::group::Show all files'
+ls -al
+ls -al another
+
+cat PKGBUILD
+cat .SRCINFO
+echo '::endgroup::'
+
 echo '::group::Publishing the repository'
+exit 0
 git remote add aur "ssh://aur@aur.archlinux.org/${pkgname}.git"
 case "$force_push" in
 true)
